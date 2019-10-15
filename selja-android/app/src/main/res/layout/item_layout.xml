@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="io.selja.ui.overview.ItemDetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_height"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:background="@{viewModel.mine ? @drawable/mine_item_background : @drawable/item_background}"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        tools:ignore="UnusedAttribute">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_itemPicture"
+            android:layout_width="@dimen/image_on_list_size"
+            android:layout_height="@dimen/image_on_list_size"
+            android:layout_marginStart="@dimen/margin_default"
+            android:scaleType="centerInside"
+            android:transitionName="mainImageTransition"
+            app:imageUrl="@{viewModel.imageUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            fresco:placeholderImage="@drawable/ic_no_photo"
+            fresco:roundedCornerRadius="8dp"
+            tools:srcCompat="@drawable/ic_no_photo" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_default"
+            android:text="@{viewModel.adItem.name}"
+            app:layout_constraintStart_toEndOf="@id/iv_itemPicture"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Item" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            style="@style/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@{viewModel.price}"
+            app:layout_constraintStart_toStartOf="@id/tv_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            tools:text="$15" />
+
+        <ImageView
+            android:id="@+id/iv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:srcCompat="@drawable/ic_time" />
+
+        <io.selja.ui.custom.TimeView
+            android:id="@+id/tv_validTime"
+            style="@style/subItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            app:layout_constraintBottom_toBottomOf="@id/iv_time"
+            app:layout_constraintStart_toEndOf="@id/iv_time"
+            app:layout_constraintTop_toTopOf="@id/iv_time"
+            app:timestamp="@{viewModel.adItem.validUntil}" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.72" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/location_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.mine ? View.GONE : View.VISIBLE}"
+            app:constraint_referenced_ids="iv_location,tv_location" />
+
+        <ImageView
+            android:id="@+id/iv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_near_me" />
+
+        <TextView
+            android:id="@+id/tv_location"
+            style="@style/subItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            app:distanceText="@{viewModel.adItem.distanceInKm}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_location"
+            app:layout_constraintStart_toEndOf="@id/iv_location"
+            app:layout_constraintTop_toTopOf="@id/iv_location" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

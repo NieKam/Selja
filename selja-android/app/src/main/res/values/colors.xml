@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/selectionColor</color>
+
+    <!-- Dark theme colors -->
+    <color name="background_color">#202124</color>
+    <color name="foreground_color">#2d2e30</color>
+    <color name="text_color">#e8eaed</color>
+    <color name="selectionColor">#5e6366</color>
+    <color name="accentColor">#525355</color>
+
+</resources>

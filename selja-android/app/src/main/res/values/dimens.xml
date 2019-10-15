@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_default">12dp</dimen>
+    <dimen name="margin_large">18dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="icon_size">32dp</dimen>
+    <dimen name="image_on_list_size">80dp</dimen>
+    <dimen name="list_item_height">110dp</dimen>
+    <dimen name="item_details_image_size">140dp</dimen>
+    <dimen name="spinner_text_size">18sp</dimen>
+</resources>

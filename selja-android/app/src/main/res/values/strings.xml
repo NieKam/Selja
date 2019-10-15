@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Selja</string>
+    <string name="cancel">Cancel</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="grant_location">Grant permission to get results from your area and add new add</string>
+    <string name="permission_explanation">Because you denied location permission from this app, you need to grant permission again manually</string>
+    <string name="camera_permission_explanation">Because you denied camera permission from this app, you need to grant permission again manually</string>
+    <string name="title_activity_ad_item_details">AdItemDetailsActivity</string>
+    <string name="km_unit">%1$.2f km</string>
+    <string name="description">Description:</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="price">Price</string>
+    <string name="how_long">Show your ad for:</string>
+    <string name="location">Your location:</string>
+    <string name="unknown">Unknown</string>
+    <string name="seconds">%1$d sec</string>
+    <string name="minutes">%1$d min</string>
+    <string name="field_not_empty">Field cannot be empty</string>
+    <string name="unknown_error">Error occurred - try again</string>
+
+    <plurals name="days">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+
+    <string name="title_activity_new_item">Add new item</string>
+    <string name="contact_invalid">Phone number must be greater than 4 digits</string>
+    <string name="price_invalid">Price cannot be zero</string>
+    <string name="add">Add</string>
+
+</resources>

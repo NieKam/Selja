@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="io.selja.ui.newITem.NewItemViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:windowSoftInputMode="stateHidden"
+            tools:context=".ui.overview.MainActivity">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_name"
+                style="@style/DarkTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                app:counterEnabled="true"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/name"
+                    android:maxLength="55"
+                    android:nextFocusLeft="@id/et_contact"
+                    android:nextFocusUp="@id/et_contact" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".6" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_price"
+                style="@style/DarkTextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/til_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/price"
+                    android:inputType="numberDecimal"
+                    android:nextFocusLeft="@id/et_description"
+                    android:nextFocusUp="@id/et_description" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_contact"
+                style="@style/DarkTextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                app:layout_constraintEnd_toEndOf="@id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/til_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/phone"
+                    android:inputType="phone"
+                    android:nextFocusLeft="@id/et_price"
+                    android:nextFocusUp="@id/et_price" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                android:transitionName="fabTransition"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_camera" />
+
+            <TextView
+                android:id="@+id/tv_howLongLabel"
+                style="@style/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:text="@string/how_long"
+                app:layout_constraintBottom_toBottomOf="@id/spinner"
+                app:layout_constraintEnd_toEndOf="@id/til_contact"
+                app:layout_constraintTop_toTopOf="@id/spinner" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_margin="@dimen/margin_small"
+                android:background="@drawable/spinner_background"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/til_contact"
+                app:maxValue="@{viewModel.maxValidTime}" />
+
+            <TextView
+                android:id="@+id/tv_locationLabel"
+                style="@style/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_large"
+                android:text="@string/location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinner" />
+
+
+            <TextView
+                android:id="@+id/tv_location"
+                style="@style/subItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small"
+                android:text="@{viewModel.location == null ? @string/unknown : viewModel.location}"
+                android:textAllCaps="true"
+                app:layout_constraintBottom_toBottomOf="@id/tv_locationLabel"
+                app:layout_constraintStart_toEndOf="@id/tv_locationLabel"
+                app:layout_constraintTop_toBottomOf="@id/spinner"
+                app:layout_constraintTop_toTopOf="@id/tv_locationLabel" />
+
+            <TextView
+                android:id="@+id/tv_descriptionLabel"
+                style="@style/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_small"
+                android:text="@string/description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_locationLabel" />
+
+            <EditText
+                android:id="@+id/et_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:background="@drawable/spinner_background"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:maxLength="2500"
+                android:minLines="3"
+                android:padding="@dimen/margin_default"
+                android:scrollbars="vertical"
+                android:scrollHorizontally="false"
+                app:layout_constraintTop_toBottomOf="@id/tv_descriptionLabel" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_itemPicture"
+                android:layout_width="@dimen/item_details_image_size"
+                android:layout_height="@dimen/item_details_image_size"
+                android:layout_marginTop="@dimen/margin_large"
+                android:background="?android:attr/selectableItemBackground"
+                android:scaleType="fitCenter"
+                android:transitionName="mainImageTransition"
+                app:imageUrl="@{viewModel.photoFileUri}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_description"
+                fresco:placeholderImage="@drawable/ic_no_photo"
+                fresco:roundedCornerRadius="8dp"
+                tools:srcCompat="@drawable/ic_no_photo" />
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/spin_kit"
+                style="@style/SpinKitView.Large.FadingCircle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+                app:SpinKit_Color="@color/text_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

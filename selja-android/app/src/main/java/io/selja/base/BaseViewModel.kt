@@ -1,0 +1,32 @@
+package io.selja.base
+
+import androidx.databinding.ObservableBoolean
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import io.selja.model.ThrowableError
+import io.selja.utils.ErrorMapper
+import kotlinx.coroutines.*
+
+
+abstract class BaseViewModel : ViewModel() {
+    val errors = MutableLiveData<ThrowableError>()
+    val loading = ObservableBoolean(false)
+
+    open fun onAttached() {}
+    open fun onDetached() {}
+
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                errors.value = ThrowableError(ErrorMapper.map(throwable))
+                loading.set(false)
+            }
+        }
+
+    }
+
+    var coroutineScope = viewModelScope + coroutineExceptionHandler
+
+    var backgroundDispatcher = Dispatchers.IO
+}
