@@ -161,3 +161,7 @@ In Android I've used:
 User ad is marked by red border
 
 ![alt text](https://github.com/NieKam/Selja/blob/master/screenshots/dashboard_user_ad_framed.png "User ad")
+
+Video
+
+[![Android app](https://img.youtube.com/vi/rAh5DK5d9gw/0.jpg)](https://www.youtube.com/watch?v=rAh5DK5d9gw)
