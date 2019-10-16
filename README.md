@@ -7,7 +7,6 @@ Selja (Icelandic: Sell) is a sample project demonstrating backend and fronted wr
 As a user you can publish advertisement for a given period of time (1 - 7 days). You can specify title, description, phone, contact number, photo. If you enable location on the device server returns only ads. withing 10 km range. Once advertisement is added, it has red border on the ads. overview.
 
 ## Technology stack
----
 
 ### Backend
 
@@ -157,11 +156,8 @@ In Android I've used:
 * Fresco for image handling
 
 ![alt text](https://github.com/NieKam/Selja/blob/master/screenshots/dashboard_framed.png "Dashboard")
-
-![alt text](https://github.com/NieKam/Selja/blob/master/screenshots/ad_details_framed.png "Ad details")
+![alt text](https://github.com/NieKam/Selja/blob/master/screenshots/ad_details_framed.png "Ad details")![alt text](https://github.com/NieKam/Selja/blob/master/screenshots/new_framed.png "New ad")
 
 User ad is marked by red border
 
 ![alt text](https://github.com/NieKam/Selja/blob/master/screenshots/dashboard_user_ad_framed.png "User ad")
-
-![alt text](https://github.com/NieKam/Selja/blob/master/screenshots/new_framed.png "New ad")
