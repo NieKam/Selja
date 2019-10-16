@@ -54,7 +54,7 @@ class TimeView @JvmOverloads constructor(
         }
 
         val dText = resources.getQuantityString(R.plurals.days, days, days)
-        val realHours = hours - TimeUnit.DAYS.toHours(hours.toLong()).toInt()
+        val realHours = hours - TimeUnit.DAYS.toHours(days.toLong()).toInt()
         val hText = resources.getQuantityString(R.plurals.hours, realHours, realHours)
 
         text = "$dText $hText"
