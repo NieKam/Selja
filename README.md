@@ -1,6 +1,6 @@
 # Selja
 
-Selja (Icelandic: Sell) is a sample project demonstrating backend and fronted written in Kotlin. Platform allows you to publish advertisements and browse other ads. added by users in your area. I've created that project to practice Spring Boot and try Koin DI for Android.
+Selja (``Icelandic: Sell``) is a sample project demonstrating backend and fronted written in Kotlin. Platform allows you to publish advertisements and browse other ads. added by users in your area. I've created that project to practice Spring Boot and try Koin DI for Android.
 
 ## Idea
 
@@ -10,7 +10,7 @@ As a user you can publish advertisement for a given period of time (1 - 7 days).
 
 ### Backend
 
-Spring Boot + PostgreSQL
+``Spring Boot`` + ``PostgreSQL``
 
 Backend written in Spring Boot using Kotlin. Backend is responible for handling incoming POST requests, handle photo uploading, returning all advertisements, advertisements based on location. Every one hour scheduler deletes expired ads. 
 
@@ -143,7 +143,7 @@ Once user is created and postgresql is running, go to main directory and type
 
 `./gradlew bootRun`
 
-### Fronted
+### Frontend
 
 Currently frontend is just an android app, but I have plans to write web client in ReactJS
 
