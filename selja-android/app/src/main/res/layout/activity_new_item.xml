@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_default"
             android:windowSoftInputMode="stateHidden"
-            tools:context=".ui.overview.MainActivity">
+            tools:context=".ui.newITem.NewItemActivity">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_name"

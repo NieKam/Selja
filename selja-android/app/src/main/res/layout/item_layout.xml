@@ -61,24 +61,17 @@
             app:layout_constraintTop_toBottomOf="@id/tv_name"
             tools:text="$15" />
 
-        <ImageView
-            android:id="@+id/iv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline"
-            app:srcCompat="@drawable/ic_time" />
-
         <io.selja.ui.custom.TimeView
             android:id="@+id/tv_validTime"
             style="@style/subItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
-            app:layout_constraintBottom_toBottomOf="@id/iv_time"
-            app:layout_constraintStart_toEndOf="@id/iv_time"
-            app:layout_constraintTop_toTopOf="@id/iv_time"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:drawableStart="@drawable/ic_time"
+            android:drawablePadding="@dimen/margin_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline"
             app:timestamp="@{viewModel.adItem.validUntil}" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -88,32 +81,18 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.72" />
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/location_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{viewModel.mine ? View.GONE : View.VISIBLE}"
-            app:constraint_referenced_ids="iv_location,tv_location" />
-
-        <ImageView
-            android:id="@+id/iv_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
-            app:layout_constraintStart_toEndOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_near_me" />
-
         <TextView
             android:id="@+id/tv_location"
             style="@style/subItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_default"
+            android:drawableStart="@drawable/ic_near_me"
+            android:drawablePadding="@dimen/margin_small"
+            android:visibility="@{viewModel.mine ? View.GONE : View.VISIBLE}"
             app:distanceText="@{viewModel.adItem.distanceInKm}"
-            app:layout_constraintBottom_toBottomOf="@id/iv_location"
-            app:layout_constraintStart_toEndOf="@id/iv_location"
-            app:layout_constraintTop_toTopOf="@id/iv_location" />
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

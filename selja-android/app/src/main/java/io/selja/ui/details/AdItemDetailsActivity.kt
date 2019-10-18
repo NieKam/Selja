@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import io.selja.R
 import io.selja.base.BaseActivity
 import io.selja.databinding.ActivityAdItemDetailsBinding
+import io.selja.databinding.AdDetailsBinding
 import io.selja.model.AdItem
 import io.selja.model.PARCEL_PARAM
 import org.koin.android.ext.android.inject
@@ -13,11 +14,11 @@ import org.koin.android.ext.android.inject
 class AdItemDetailsActivity : BaseActivity<AdItemDetailsViewModel>() {
     override val viewModel: AdItemDetailsViewModel by inject()
 
-    private lateinit var binding: ActivityAdItemDetailsBinding
+    private lateinit var binding: AdDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView<ActivityAdItemDetailsBinding>(this, R.layout.activity_ad_item_details)
+        binding = DataBindingUtil.setContentView<AdDetailsBinding>(this, R.layout.ad_details)
             .also {
                 it.viewModel = viewModel
                 it.swipeLayout.setOnRefreshListener { viewModel.refresh() }
@@ -28,6 +29,8 @@ class AdItemDetailsActivity : BaseActivity<AdItemDetailsViewModel>() {
             supportActionBar?.title = item.name
             viewModel.oAdItem.set(item)
         }
+
+        binding.tvPhone.setOnClickListener { viewModel.revealPhone() }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

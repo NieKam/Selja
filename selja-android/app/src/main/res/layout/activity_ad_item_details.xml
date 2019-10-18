@@ -37,35 +37,19 @@
                 fresco:roundedCornerRadius="8dp"
                 tools:srcCompat="@drawable/ic_no_photo" />
 
-            <ImageView
-                android:id="@+id/iv_time"
-                android:layout_width="@dimen/icon_size"
-                android:layout_height="@dimen/icon_size"
-                android:layout_marginStart="@dimen/margin_large"
-                app:layout_constraintStart_toEndOf="@id/iv_itemImage"
-                app:layout_constraintTop_toTopOf="@id/iv_itemImage"
-                app:srcCompat="@drawable/ic_time" />
-
-            <ImageView
-                android:id="@+id/iv_location"
-                android:layout_width="@dimen/icon_size"
-                android:layout_height="@dimen/icon_size"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_large"
-                app:layout_constraintStart_toEndOf="@id/iv_itemImage"
-                app:layout_constraintTop_toBottomOf="@id/iv_time"
-                app:srcCompat="@drawable/ic_near_me" />
-
             <TextView
                 android:id="@+id/tv_location"
                 style="@style/subItemBigger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_default"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
+                android:drawableStart="@drawable/ic_near_me"
+                android:drawablePadding="@dimen/margin_small"
+                android:visibility="@{viewModel.mine ? View.GONE : View.VISIBLE}"
                 app:distanceText="@{viewModel.oAdItem.distanceInKm}"
-                app:layout_constraintBottom_toBottomOf="@id/iv_location"
-                app:layout_constraintStart_toEndOf="@id/iv_location"
-                app:layout_constraintTop_toTopOf="@id/iv_location"
+                app:layout_constraintStart_toEndOf="@id/iv_itemImage"
+                app:layout_constraintTop_toBottomOf="@id/tv_validTime"
                 tools:text="14 km" />
 
             <TextView
@@ -77,42 +61,35 @@
                 android:layout_marginTop="@dimen/margin_large"
                 android:text="@{viewModel.price}"
                 app:layout_constraintStart_toEndOf="@id/iv_itemImage"
-                app:layout_constraintTop_toBottomOf="@id/iv_location"
+                app:layout_constraintTop_toBottomOf="@id/tv_location"
                 tools:text="$15" />
 
             <io.selja.ui.custom.TimeView
                 android:id="@+id/tv_validTime"
                 style="@style/subItemBigger"
                 android:layout_width="wrap_content"
+                android:gravity="center"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_default"
+                android:layout_marginStart="@dimen/margin_large"
+                android:drawableStart="@drawable/ic_time"
+                android:drawablePadding="@dimen/margin_small"
                 app:detailedView="@{viewModel.detailedView}"
-                app:layout_constraintBottom_toBottomOf="@id/iv_time"
-                app:layout_constraintStart_toEndOf="@id/iv_time"
-                app:layout_constraintTop_toTopOf="@id/iv_time"
+                app:layout_constraintStart_toEndOf="@id/iv_itemImage"
+                app:layout_constraintTop_toTopOf="@id/iv_itemImage"
                 app:timestamp="@{viewModel.oAdItem.validUntil}" />
-
-            <ImageView
-                android:id="@+id/iv_phone"
-                android:layout_width="@dimen/icon_size"
-                android:layout_height="@dimen/icon_size"
-                android:layout_marginTop="@dimen/margin_large"
-                android:visibility="@{viewModel.oAdItem.phone != null ? View.VISIBLE : View.GONE}"
-                app:layout_constraintStart_toStartOf="@id/iv_itemImage"
-                app:layout_constraintTop_toBottomOf="@id/iv_itemImage"
-                app:srcCompat="@drawable/ic_local_phone" />
-
 
             <TextView
                 android:id="@+id/tv_phone"
                 style="@style/subItemBigger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
+                android:drawableStart="@drawable/ic_local_phone"
+                android:drawablePadding="@dimen/margin_small"
                 android:text="@{viewModel.oAdItem.phone}"
-                app:layout_constraintBottom_toBottomOf="@id/iv_phone"
-                app:layout_constraintStart_toEndOf="@id/iv_phone"
-                app:layout_constraintTop_toTopOf="@id/iv_phone"
+                android:visibility="@{viewModel.oAdItem.phone != null ? View.VISIBLE : View.GONE}"
+                app:layout_constraintStart_toStartOf="@id/iv_itemImage"
+                app:layout_constraintTop_toBottomOf="@id/iv_itemImage"
                 tools:text="+48 662 12 32" />
 
             <TextView
@@ -148,13 +125,6 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/location_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.mine ? View.GONE : View.VISIBLE}"
-                app:constraint_referenced_ids="iv_location,tv_location" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

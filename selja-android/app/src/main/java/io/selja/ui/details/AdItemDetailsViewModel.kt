@@ -20,7 +20,8 @@ class AdItemDetailsViewModel(
 ) : BaseViewModel() {
 
     val detailedView = true
-    var oAdItem = ObservableField<AdItem>()
+    val oAdItem = ObservableField<AdItem>()
+    val phoneNumber = ObservableField<String>()
 
     private var lastSavedLocation: Location? = null
 
@@ -60,6 +61,11 @@ class AdItemDetailsViewModel(
         }
 
         oAdItem.set(item)
+        phoneNumber.set(item.phoneObfuscated)
         loading.set(false)
+    }
+
+    fun revealPhone() {
+        phoneNumber.set(oAdItem.get()?.phone)
     }
 }

@@ -8,5 +8,5 @@
     <color name="text_color">#e8eaed</color>
     <color name="selectionColor">#5e6366</color>
     <color name="accentColor">#525355</color>
-
+    <color name="iconColor">#E0E0E0</color>
 </resources>
