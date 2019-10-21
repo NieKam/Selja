@@ -47,5 +47,5 @@ data class AdItem(
         var distanceInKm: Double = 0.0,
 
         @JsonView(Views.Short::class)
-        val validUntil: Long = 0
+        val validUntilMs: Long = 0
 )

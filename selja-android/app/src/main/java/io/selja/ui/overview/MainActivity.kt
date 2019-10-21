@@ -15,7 +15,6 @@ import io.selja.databinding.ActivityMainBinding
 import io.selja.model.AdItem
 import io.selja.model.PARCEL_PARAM
 import io.selja.permissions.LOCATION_PERMISSION
-import io.selja.permissions.PermissionManager
 import io.selja.ui.details.AdItemDetailsActivity
 import io.selja.ui.newITem.NewItemActivity
 import io.selja.ui.overview.adapter.ItemsAdapter
@@ -25,8 +24,6 @@ import java.util.concurrent.TimeUnit
 private const val NEW_ITEM_REQUEST = 10
 
 class MainActivity : BaseActivity<ItemsOverviewViewModel>() {
-
-    private val permissionManager: PermissionManager by inject()
     private val itemsObserver = Observer<List<AdItem>> { items ->
         itemsAdapter.add(items)
         binding.swipeLayout.isRefreshing = false
@@ -51,11 +48,11 @@ class MainActivity : BaseActivity<ItemsOverviewViewModel>() {
             }
         }
 
+        viewModel.initPermissionState(permissionManager.hasPermission(this, LOCATION_PERMISSION))
+
         itemsAdapter.apply {
             itemClickListener = { item, sharedViews -> showItem(item, sharedViews) }
         }
-
-        viewModel.init(permissionManager.hasRequiredPermissions(this, LOCATION_PERMISSION))
     }
 
     override fun onStart() {

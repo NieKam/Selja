@@ -12,8 +12,6 @@ import io.selja.ui.newITem.NewItemViewModel
 import io.selja.ui.overview.ItemsOverviewViewModel
 import io.selja.ui.overview.adapter.ItemsAdapter
 import io.selja.utils.CameraHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel

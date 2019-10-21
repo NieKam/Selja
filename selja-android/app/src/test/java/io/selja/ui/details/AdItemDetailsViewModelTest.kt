@@ -2,10 +2,7 @@ package io.selja.ui.details
 
 import android.location.Location
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import io.selja.base.DeviceId
 import io.selja.model.AdItem
 import io.selja.model.getPriceFormatted
@@ -24,7 +21,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
+import org.mockito.Mockito.anyLong
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 
@@ -105,13 +104,22 @@ class AdItemDetailsViewModelTest {
     @ExperimentalCoroutinesApi
     @Test
     fun testRefresh() = runBlockingTest {
-        val adItem = mock(AdItem::class.java)
-        whenever(adItem.id).thenReturn(1)
-        viewModel.oAdItem.set(adItem)
+        val adItemMock = mock(AdItem::class.java)
+        whenever(adItemMock.id).thenReturn(1)
+        whenever(adItemMock.phoneObfuscated).thenReturn("***")
+        whenever(dataModel.getOne(anyOrNull(), anyOrNull())).thenReturn(adItemMock)
+
+        viewModel.oAdItem.set(adItemMock)
 
         viewModel.refresh()
 
         verify(dataModel).getOne(1, null)
+    }
+
+    @Test
+    fun testInit() {
+        viewModel.initPermissionState(true)
+        assertTrue(viewModel.hasLocationPermission.get())
     }
 
     @ExperimentalCoroutinesApi
@@ -127,19 +135,37 @@ class AdItemDetailsViewModelTest {
         viewModel.oAdItem.set(adItemMock)
         viewModel.onAttached()
 
-        verify(locationRepository).getLastKnownLocation()
         verify(locationRepository, times(0)).startLocationUpdates()
     }
 
     @ExperimentalCoroutinesApi
     @Test
     fun `onAttached when last location is unknown`() = runBlockingTest {
+        val adItemMock = mock(AdItem::class.java)
+        whenever(adItemMock.id).thenReturn(1)
         whenever(locationRepository.getLastKnownLocation()).thenReturn(null)
+        whenever(dataModel.getOne(anyOrNull(), anyOrNull())).thenReturn(adItemMock)
 
+        viewModel.initPermissionState(true)
+        viewModel.oAdItem.set(adItemMock)
         viewModel.onAttached()
 
-        verify(locationRepository).getLastKnownLocation()
         verify(locationRepository).startLocationUpdates()
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `onAttached when permission is not granted`() = runBlockingTest {
+        val adItemMock = mock(AdItem::class.java)
+        whenever(adItemMock.id).thenReturn(1)
+
+        whenever(dataModel.getOne(anyOrNull(), anyOrNull())).thenReturn(adItemMock)
+
+        viewModel.initPermissionState(false)
+        viewModel.oAdItem.set(adItemMock)
+        viewModel.onAttached()
+
+        verify(dataModel).getOne(eq(1), isNull())
     }
 
     @Test

@@ -1,6 +1,7 @@
 package io.selja.repository
 
 import android.location.Location
+import io.selja.api.MULTIPART_IMAGE_NAME
 import io.selja.api.SeljaApi
 import io.selja.model.AdItem
 import io.selja.model.NewAdItem
@@ -26,14 +27,13 @@ class AdItemsDataSource(private val seljaApi: SeljaApi) : AdItemsDataModel {
         }
     }
 
-    override suspend fun createNew(newAdItem: NewAdItem): AdItem {
-        return seljaApi.createNewAd(newAdItem)
-    }
+    override suspend fun createNew(newAdItem: NewAdItem, path: String?): AdItem {
+        val part: MultipartBody.Part? = path?.let {
+            val photoFile = File(it)
+            val fileReqBody = photoFile.asRequestBody("image/*".toMediaTypeOrNull())
+            MultipartBody.Part.createFormData(MULTIPART_IMAGE_NAME, photoFile.name, fileReqBody)
+        }
 
-    override suspend fun uploadFile(id: Long, path: String): AdItem {
-        val photoFile = File(path)
-        val fileReqBody = photoFile.asRequestBody("image/*".toMediaTypeOrNull())
-        val part = MultipartBody.Part.createFormData("file", photoFile.name, fileReqBody)
-        return seljaApi.uploadPhoto(part, id)
+        return seljaApi.createNewAd(newAdItem, part)
     }
 }

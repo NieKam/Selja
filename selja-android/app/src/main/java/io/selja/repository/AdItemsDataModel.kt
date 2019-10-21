@@ -10,7 +10,5 @@ interface AdItemsDataModel {
 
     suspend fun getOne(id: Long, location: Location? = null): AdItem
 
-    suspend fun createNew(newAdItem: NewAdItem): AdItem
-
-    suspend fun uploadFile(id: Long, path: String): AdItem
+    suspend fun createNew(newAdItem: NewAdItem, path: String? = null): AdItem
 }

@@ -71,7 +71,7 @@ export default function AdItem(props) {
                         <Typography variant="h5" color="textPrimary" className={classes.mainText}>
                             {adItem.price} {adItem.currency}
                         </Typography>
-                        <Timer classes={classes.timer} validUntil={adItem.validUntil} />
+                        <Timer classes={classes.timer} validUntil={adItem.validUntilMs} />
                     </CardContent>
                 </div>
                 <Location distance={adItem.distanceInKm} />

@@ -39,8 +39,8 @@ data class AdItem(
     @field:Json(name = "distanceInKm")
     var distanceInKm: Double = 0.0,
 
-    @field:Json(name = "validUntil")
-    val validUntil: Long = 0
+    @field:Json(name = "validUntilMs")
+    val validUntilMs: Long = 0
 ) : Parcelable
 
 fun AdItem.getPriceFormatted() = "${this.price} ${this.currency}"

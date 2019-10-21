@@ -1,11 +1,15 @@
 package io.selja.seljabackend.model
 
 import io.selja.seljabackend.exception.BadLocationException
+import java.lang.IllegalStateException
 import javax.persistence.*
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
+import java.math.BigDecimal
+import java.math.RoundingMode
+
 
 @Entity
 @Table(name = "location")
@@ -29,9 +33,17 @@ data class Location(
                 throw BadLocationException()
             }
 
-            return Location(lat = lat, long = long)
+            return Location(lat = lat.roundTo(4), long = long.roundTo(4))
         }
     }
+}
+
+fun Double.roundTo(decimalPlaces : Int) : Double {
+    if (decimalPlaces < 0) {
+        return this
+    }
+
+    return BigDecimal.valueOf(this).setScale(decimalPlaces, RoundingMode.HALF_UP).toDouble()
 }
 
 fun Location.getDistanceTo(location: Location): Double {

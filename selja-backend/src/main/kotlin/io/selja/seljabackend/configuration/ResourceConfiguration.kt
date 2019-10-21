@@ -2,6 +2,7 @@ package io.selja.seljabackend.configuration
 
 import io.selja.seljabackend.service.UPLOADED_FOLDER
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -9,5 +10,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class ResourceConfiguration : WebMvcConfigurer {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/images/**").addResourceLocations("file:${UPLOADED_FOLDER}")
+    }
+
+    override fun addCorsMappings(registry: CorsRegistry) {
+        registry.addMapping("/**");
     }
 }

@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonView
 import io.selja.seljabackend.model.AdItem
 import io.selja.seljabackend.model.Location
 import io.selja.seljabackend.model.NewAdItem
+import io.selja.seljabackend.model.toAdItem
 import io.selja.seljabackend.service.AdsService
 import io.selja.seljabackend.service.StorageService
 import io.selja.seljabackend.views.Views
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -20,7 +22,6 @@ private const val LONG_PARAM = "long"
 
 @RestController
 @Validated
-@CrossOrigin(origins = ["http://localhost:3000"])
 class AdItemsController {
 
     @Autowired
@@ -45,16 +46,15 @@ class AdItemsController {
         return adsService.getOne(id, Location.create(lat, long))
     }
 
-    @PostMapping(ADS_PATH)
+    @PostMapping(value = [ADS_PATH], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
-    fun new(@Validated @RequestBody newItem: NewAdItem): AdItem {
-        return adsService.createNewAd(newItem)
-    }
+    fun new(@Validated @RequestPart(value = "ad") newItem: NewAdItem,
+            @RequestPart(value = "photo", required = false) photo: MultipartFile?): AdItem {
+        val adItem = newItem.toAdItem()
+        photo?.let {
+            adItem.photoUrl = storageService.store(it)
+        }
 
-    @PutMapping("${ADS_PATH}/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
-    fun uploadPhoto(@RequestParam("file") file: MultipartFile, @PathVariable @Min(1) id: Long): AdItem {
-        val url = storageService.store(file)
-        return adsService.addPhotoToItem(id, url)
+        return adsService.saveNewAd(adItem)
     }
 }

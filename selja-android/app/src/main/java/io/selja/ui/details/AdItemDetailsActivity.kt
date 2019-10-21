@@ -5,10 +5,10 @@ import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import io.selja.R
 import io.selja.base.BaseActivity
-import io.selja.databinding.ActivityAdItemDetailsBinding
 import io.selja.databinding.AdDetailsBinding
 import io.selja.model.AdItem
 import io.selja.model.PARCEL_PARAM
+import io.selja.permissions.LOCATION_PERMISSION
 import org.koin.android.ext.android.inject
 
 class AdItemDetailsActivity : BaseActivity<AdItemDetailsViewModel>() {
@@ -33,6 +33,7 @@ class AdItemDetailsActivity : BaseActivity<AdItemDetailsViewModel>() {
         binding.tvPhone.setOnClickListener { viewModel.revealPhone() }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        viewModel.initPermissionState(permissionManager.hasPermission(this, LOCATION_PERMISSION))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

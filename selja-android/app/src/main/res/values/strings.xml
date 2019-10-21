@@ -11,7 +11,7 @@
     <string name="name">Name</string>
     <string name="phone">Phone</string>
     <string name="price">Price</string>
-    <string name="how_long">Show your ad for:</string>
+    <string name="how_long">Duration (days):</string>
     <string name="location">Your location:</string>
     <string name="unknown">Unknown</string>
     <string name="seconds">%1$d sec</string>

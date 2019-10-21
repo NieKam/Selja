@@ -2,10 +2,7 @@ package io.selja.ui.newITem
 
 import android.location.Location
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import io.selja.base.DeviceId
 import io.selja.model.AdItem
 import io.selja.repository.AdItemsDataModel
@@ -110,14 +107,14 @@ class NewItemViewModelTest {
         whenever(location.latitude).thenReturn(50.0)
         whenever(location.longitude).thenReturn(10.0)
 
-        whenever(dataModel.createNew(any())).thenReturn(adItem)
+        whenever(dataModel.createNew(any(), any())).thenReturn(adItem)
         whenever(deviceId.getDeviceId()).thenReturn("1234")
 
         viewModel.lastLocation = location
 
         viewModel.save("name", "desc", "123456", 1.0, 1)
 
-        verify(dataModel).createNew(any())
+        verify(dataModel).createNew(any(), isNull())
     }
 
     @ExperimentalCoroutinesApi
@@ -133,7 +130,7 @@ class NewItemViewModelTest {
         whenever(location.latitude).thenReturn(50.0)
         whenever(location.longitude).thenReturn(10.0)
 
-        whenever(dataModel.createNew(any())).thenReturn(adItem)
+        whenever(dataModel.createNew(any(), any())).thenReturn(adItem)
         whenever(deviceId.getDeviceId()).thenReturn("1234")
 
         viewModel.lastLocation = location
@@ -141,7 +138,6 @@ class NewItemViewModelTest {
 
         viewModel.save("name", "desc", "123456", 1.0, 1)
 
-        verify(dataModel).createNew(any())
-        verify(dataModel).uploadFile(eq(id), eq(path))
+        verify(dataModel).createNew(any(), eq(path))
     }
 }

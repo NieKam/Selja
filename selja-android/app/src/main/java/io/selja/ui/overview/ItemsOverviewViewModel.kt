@@ -7,7 +7,6 @@ import io.selja.base.BaseViewModel
 import io.selja.model.AdItem
 import io.selja.repository.AdItemsDataModel
 import io.selja.repository.LocationRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -15,7 +14,6 @@ import kotlinx.coroutines.launch
 class ItemsOverviewViewModel(private val dataModel: AdItemsDataModel, private val locationRepo: LocationRepository) :
     BaseViewModel() {
 
-    val isPermissionGranted = ObservableBoolean(false)
     val showEmptyView = ObservableBoolean(false)
     val adItems: MutableLiveData<List<AdItem>> by lazy {
         MutableLiveData<List<AdItem>>()
@@ -30,10 +28,10 @@ class ItemsOverviewViewModel(private val dataModel: AdItemsDataModel, private va
         }
     }
 
-    fun init(hasLocationPermission: Boolean) {
+    override fun initPermissionState(hasLocationPermission: Boolean) {
+        super.initPermissionState(hasLocationPermission)
         loading.set(true)
-        isPermissionGranted.set(hasLocationPermission)
-        if (!hasLocationPermission) {
+                if (!hasLocationPermission) {
             getAll()
             return
         }
@@ -56,7 +54,7 @@ class ItemsOverviewViewModel(private val dataModel: AdItemsDataModel, private va
     }
 
     fun onRequestPermissionsResult(granted: Boolean) {
-        isPermissionGranted.set(granted)
+        hasLocationPermission.set(granted)
         if (granted) {
             locationRepo.startLocationUpdates()
         }

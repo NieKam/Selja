@@ -54,7 +54,7 @@
                     app:detailedView="@{viewModel.detailedView}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:timestamp="@{viewModel.oAdItem.validUntil}" />
+                    app:timestamp="@{viewModel.oAdItem.validUntilMs}" />
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/iv_itemImage"

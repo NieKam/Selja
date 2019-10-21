@@ -9,6 +9,8 @@ private const val PATH = "/items"
 private const val PATH_ID = "$PATH/{id}"
 private const val QUERY_PARAM_LAT = "lat"
 private const val QUERY_PARAM_LONG = "long"
+private const val MULTIPART_AD_NAME = "ad"
+const val MULTIPART_IMAGE_NAME = "photo"
 
 interface SeljaApi {
     @GET(PATH)
@@ -23,10 +25,7 @@ interface SeljaApi {
     @GET(PATH_ID)
     suspend fun getOneWithLocation(@Path("id") id: Long, @Query(QUERY_PARAM_LAT) lat: String, @Query(QUERY_PARAM_LONG) lon: String): AdItem
 
-    @POST(PATH)
-    suspend fun createNewAd(@Body requestBody: NewAdItem): AdItem
-
     @Multipart
-    @PUT(PATH_ID)
-    suspend fun uploadPhoto(@Part file: MultipartBody.Part, @Path("id") id: Long): AdItem
+    @POST(PATH)
+    suspend fun createNewAd(@Part(value = MULTIPART_AD_NAME) requestBody: NewAdItem, @Part file: MultipartBody.Part?): AdItem
 }

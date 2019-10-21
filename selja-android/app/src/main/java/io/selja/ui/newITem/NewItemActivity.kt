@@ -21,14 +21,12 @@ import io.selja.databinding.ActivityNewItemBinding
 import io.selja.model.AdItem
 import io.selja.model.PARCEL_PARAM
 import io.selja.permissions.CAMERA_PERMISSION
-import io.selja.permissions.PermissionManager
 import io.selja.utils.*
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
 class NewItemActivity : BaseActivity<NewItemViewModel>() {
     override val viewModel: NewItemViewModel by inject()
-    private val permissionManager: PermissionManager by inject()
     private val cameraHelper: CameraHelper by inject()
 
     private val newItemObserver = Observer<AdItem> { item ->
@@ -59,7 +57,7 @@ class NewItemActivity : BaseActivity<NewItemViewModel>() {
     }
 
     private fun openCamera() {
-        if (!permissionManager.hasRequiredPermissions(this, CAMERA_PERMISSION)) {
+        if (!permissionManager.hasPermission(this, CAMERA_PERMISSION)) {
             permissionManager.requestCameraPermission(this)
             return
         }

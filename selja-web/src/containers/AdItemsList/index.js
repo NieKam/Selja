@@ -1,19 +1,35 @@
+import { withRouter } from 'react-router-dom';
 import * as adItemApi from '../../helpers/adItemApi'
 import AdItem from '../../components/AdItem'
+import Loading from '../../components/Loading';
 import React, { Component } from 'react';
 
 class AdItemsList extends Component {
+    constructor(props) {
+        super(props);
+        this._isMounted = false;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     componentDidMount = async () => {
-        const adItems = await adItemApi.getAll(52.66, -8.55)
-        this.setState({ adItems })
+        this._isMounted = true;
+        const { lat, long } = this.props
+        const adItems = await adItemApi.getAll(lat, long)
+        this._isMounted && this.setState({ adItems, fetched: true })
     }
 
     static defaultProps = {
-        adItems: []
+        adItems: [],
+        lat: null,
+        long: null
     }
 
     state = {
-        adItems: this.props.adItems
+        adItems: this.props.adItems,
+        fetched: false,
     }
 
     handleClick = (id) => {
@@ -25,10 +41,17 @@ class AdItemsList extends Component {
 
         return (
             <div>
-                {adItems.map(item => <AdItem key={item.id} ad={item} onClick={this.handleClick} />)}
+                {
+                    this.state.fetched ?
+                        <div>
+                            {adItems.map(item => <AdItem key={item.id} ad={item} onClick={this.handleClick} />)}
+                        </div>
+                        : <Loading />
+                }
             </div>
+
         )
     }
 }
 
-export default AdItemsList
+export default withRouter(AdItemsList)

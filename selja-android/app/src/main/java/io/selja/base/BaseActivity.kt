@@ -6,10 +6,12 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import io.selja.R
 import io.selja.model.ThrowableError
+import io.selja.permissions.PermissionManager
+import org.koin.android.ext.android.inject
 
 abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity() {
     abstract val viewModel: T
-
+    protected val permissionManager: PermissionManager by inject()
     private val itemsObserver = Observer<ThrowableError> { error ->
         showErrorToast(error)
     }

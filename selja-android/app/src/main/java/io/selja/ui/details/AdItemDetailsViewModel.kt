@@ -38,6 +38,11 @@ class AdItemDetailsViewModel(
 
     override fun onAttached() {
         loading.set(true)
+        if (!hasLocationPermission.get()) {
+            loadAdItem()
+            return
+        }
+
         lastSavedLocation = locationRepository.getLastKnownLocation()
         if (lastSavedLocation == null) {
             locationRepository.startLocationUpdates()

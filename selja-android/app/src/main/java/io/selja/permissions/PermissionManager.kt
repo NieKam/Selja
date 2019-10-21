@@ -18,7 +18,7 @@ const val CAMERA_PERMISSION = Manifest.permission.CAMERA
 
 class PermissionManager {
 
-    fun hasRequiredPermissions(context: Context, permission: String) =
+    fun hasPermission(context: Context, permission: String) =
         ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
 
     private fun needsExplanation(context: Activity, permission: String) =
@@ -44,7 +44,7 @@ class PermissionManager {
     }
 
     private fun requestPermission(context: Activity, permission: String, @StringRes explanation: Int) {
-        if (hasRequiredPermissions(context, permission)) {
+        if (hasPermission(context, permission)) {
             return
         }
 

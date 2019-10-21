@@ -63,7 +63,7 @@ class AdsServiceImplTest {
     @Test
     fun getAllIfLocationIsNotNull_thenDistanceShouldBeLowerThanRadius() {
 
-        val ad = AdItem(location = locationA, validUntil = System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
+        val ad = AdItem(location = locationA, validUntilMs = System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
         whenever(adsRepository.findAllInArea(lat = locationB.lat, long = locationB.long, radiusKm = RADIUS_KM)).thenReturn(mutableListOf(ad))
 
         val found = adsService.getAll(locationB)
@@ -77,7 +77,7 @@ class AdsServiceImplTest {
     @Test
     fun getOneIfLocationIsNotNull_thenDistanceShouldBeLowerThanRadius() {
         val id = 1L
-        val ad = AdItem(location = locationA, name = "Item", validUntil = tomorrow)
+        val ad = AdItem(location = locationA, name = "Item", validUntilMs = tomorrow)
         whenever(adsRepository.findById(eq(id))).thenReturn(Optional.of(ad))
 
         val found = adsService.getOne(id, locationB)
@@ -90,7 +90,7 @@ class AdsServiceImplTest {
     @Test
     fun getOneIfLocationIsNull_thenDistanceShouldBeZero() {
         val id = 1L
-        val ad = AdItem(id = id, location = locationA, name = "Item", validUntil = tomorrow)
+        val ad = AdItem(id = id, location = locationA, name = "Item", validUntilMs = tomorrow)
         whenever(adsRepository.findById(eq(id))).thenReturn(Optional.of(ad))
 
         val found = adsService.getOne(id, null)
@@ -103,40 +103,35 @@ class AdsServiceImplTest {
     fun createOne_thenNewItemShouldBeReturned() {
         val phone = "123 456 789"
         val obfuscatedPhone = "123****9"
+        val url = "images/dcxsdf"
 
-        val newItem = NewAdItem(deviceId = "dev-Id", name = "name", description = "desc", phone = phone, price = 10.0, validFor = 60_000, lat = 50.0, long = 10.0)
+        val newItem = NewAdItem(deviceId = "dev-Id", name = "name", description = "desc", phone = phone, price = 10.0, duration = 60_000, lat = 50.0, long = 10.0)
         val adItem = newItem.toAdItem()
+        adItem.photoUrl = url
         whenever(adsRepository.save(any<AdItem>())).thenReturn(adItem)
 
-        val ad = adsService.createNewAd(newItem)
+        val ad = adsService.saveNewAd(adItem)
 
         assertThat(ad.deviceId).isEqualTo(newItem.deviceId)
         assertThat(ad.name).isEqualTo(newItem.name)
         assertThat(ad.description).isEqualTo(newItem.description)
         assertThat(ad.phone).isEqualTo(newItem.phone)
         assertThat(ad.price).isEqualTo(newItem.price)
-        assertThat(ad.validUntil).isGreaterThan(now)
+        assertThat(ad.validUntilMs).isGreaterThan(now)
         assertThat(ad.location?.lat).isEqualTo(newItem.lat)
         assertThat(ad.location?.long).isEqualTo(newItem.long)
         assertThat(ad.distanceInKm).isEqualTo(0.0)
         assertThat(ad.phoneObfuscated).isEqualTo(obfuscatedPhone)
-        assertThat(ad.photoUrl).isEmpty()
+        assertThat(ad.photoUrl).isEqualTo(url)
     }
 
     @Test
-    fun uploadPhoto_thenItemShouldBeUpdated() {
-        val id = 1L
-        val url = "images/dcxsdf"
+    fun `create item without photo`() {
+        val newItem = NewAdItem(deviceId = "dev-Id", name = "name", description = "desc", phone = "123", price = 10.0, duration = 60_000, lat = 50.0, long = 10.0)
+        val adItem = newItem.toAdItem()
+        whenever(adsRepository.save(any<AdItem>())).thenReturn(adItem)
 
-        val ad = AdItem(id = id, validUntil = tomorrow)
-        whenever(adsRepository.findById(eq(id))).thenReturn(Optional.of(ad))
-
-        val updatedItem = adsService.addPhotoToItem(id, url)
-        assertThat(updatedItem.photoUrl).isEqualTo(url)
-    }
-
-    @Test(expected = AdNotFoundException::class)
-    fun whenUploadPhotoWithWrongId_thenAnExceptionIsThrown() {
-        adsService.addPhotoToItem(1, "url")
+        val ad = adsService.saveNewAd(adItem)
+        assertThat(ad.photoUrl).isEmpty()
     }
 }

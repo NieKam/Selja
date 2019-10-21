@@ -1,16 +1,18 @@
+import { photoUrl } from "../../helpers/routes"
+import { Typography, Paper, Container, Chip } from "@material-ui/core";
+import { withRouter } from 'react-router-dom';
+import { withStyles } from "@material-ui/styles"
+import * as adItemApi from '../../helpers/adItemApi'
+import CallIcon from '@material-ui/icons/Call';
 import Card from "@material-ui/core/Card"
+import CardContent from "@material-ui/core/CardContent"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardMedia from "@material-ui/core/CardMedia"
-import CardContent from "@material-ui/core/CardContent"
-import React from "react"
-import PropTypes from "prop-types"
-import { withStyles } from "@material-ui/styles"
-import { Typography, Paper, Container, Chip } from "@material-ui/core";
-import * as adItemApi from '../../helpers/adItemApi'
-import { photoUrl } from "../../helpers/routes"
-import Timer from "../../components/Timer"
-import CallIcon from '@material-ui/icons/Call';
 import NearMe from '@material-ui/icons/NearMe';
+import PropTypes from "prop-types"
+import React from "react"
+import Timer from "../../components/Timer"
+import Loading from "../../components/Loading";
 
 const styles = theme => ({
     root: {
@@ -40,7 +42,10 @@ const styles = theme => ({
 })
 
 class AdItemsDetails extends React.Component {
-    id = () => this.props.match.params.id
+    constructor(props) {
+        super(props);
+        this._isMounted = false;
+    }
 
     state = {
         adItem: null,
@@ -48,22 +53,32 @@ class AdItemsDetails extends React.Component {
         phone: ''
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     componentDidMount = async () => {
+        this._isMounted = true;
+        const { lat, long } = this.props
+
         try {
-            const adItem = await adItemApi.getOne(this.id())
-            this.setState({ adItem, fetched: true, phone: adItem.phoneObfuscated })
+            const adItem = await adItemApi.getOne(this.id(), lat, long)
+            this._isMounted && this.setState({ adItem, fetched: true, phone: adItem.phoneObfuscated })
         } catch (e) {
+            console.log(e)
             if (e.status === 404) {
                 this.props.history.push(`/notFound/${this.id()}`)
             }
         }
     }
 
+    id = () => this.props.match.params.id
+
     showPhone = () => {
         if (this.state.phone === this.state.adItem.phone) {
             return
         }
-        
+
         this.setState({ phone: this.state.adItem.phone })
     };
 
@@ -73,27 +88,29 @@ class AdItemsDetails extends React.Component {
 
         return (
             <Container maxWidth="xl" className={classes.root}>
-                {this.state.fetched ?
-                    <Card className={classes.card}>
-                        <CardHeader title={adItem.name} subheader={adItem.price + ' ' + adItem.currency}
-                            action={<Timer className={classes.timer} validUntil={adItem.validUntil} />} />
-                        <CardMedia
-                            className={classes.media}
-                            image={photoUrl(adItem.photoUrl)}
-                            title={adItem.name}
-                        />
-                        <CardContent>
-                            <Container className={classes.details}>
-                                <Chip className={classes.itemDetails} variant="outlined" icon={<CallIcon />} onClick={this.showPhone} label={this.state.phone} />
-                                <Chip className={classes.itemDetails} variant="outlined" icon={<NearMe />} label={adItem.distanceInKm.toFixed(2)} />
-                            </Container>
+                {
+                    this.state.fetched ?
+                        <Card className={classes.card}>
+                            <CardHeader title={adItem.name} subheader={adItem.price + ' ' + adItem.currency}
+                                action={<Timer validUntil={adItem.validUntilMs} />} />
+                            <CardMedia
+                                className={classes.media}
+                                image={photoUrl(adItem.photoUrl)}
+                                title={adItem.name}
+                            />
+                            <CardContent>
+                                <Container className={classes.details}>
+                                    <Chip className={classes.itemDetails} variant="outlined" icon={<CallIcon />} onClick={this.showPhone} label={this.state.phone} />
+                                    <Chip className={classes.itemDetails} variant="outlined" icon={<NearMe />} label={`${adItem.distanceInKm.toFixed(2)} km`} />
+                                </Container>
 
-                            <Typography variant="body2" color="textSecondary" component="p">
-                                {adItem.description}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                    : <Paper><Typography variant="body2" color="textSecondary">Loading....</Typography></Paper>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    {adItem.description}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+
+                        : <Loading />
                 }
             </Container>
         )
@@ -104,4 +121,4 @@ AdItemsDetails.propTypes = {
     classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(AdItemsDetails)
+export default withRouter(withStyles(styles)(AdItemsDetails))

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface AdsRepository : JpaRepository<AdItem, Long> {
 
-    @Query("SELECT a FROM AdItem a WHERE a.validUntil <= :timestamp")
+    @Query("SELECT a FROM AdItem a WHERE a.validUntilMs <= :timestamp")
     fun findAllOlderThan(timestamp: Long): List<AdItem>
 
     @Query("SELECT a, " +

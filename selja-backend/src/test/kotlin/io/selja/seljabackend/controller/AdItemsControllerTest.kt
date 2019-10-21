@@ -1,19 +1,26 @@
 package io.selja.seljabackend.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
 import io.selja.seljabackend.model.AdItem
+import io.selja.seljabackend.model.NewAdItem
+import io.selja.seljabackend.model.toAdItem
 import io.selja.seljabackend.service.AdsService
 import io.selja.seljabackend.service.StorageService
+import org.hamcrest.Matchers
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+
 
 @RunWith(SpringRunner::class)
 @WebMvcTest
@@ -27,6 +34,9 @@ class AdItemsControllerTest() {
 
     @MockBean
     private lateinit var storageService: StorageService
+
+    @Autowired
+    private lateinit var mapper: ObjectMapper
 
     @Test
     fun testGetAll_descriptionIsNotIncluded() {
@@ -59,5 +69,45 @@ class AdItemsControllerTest() {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("\$.name").value(ad.name))
                 .andExpect(jsonPath("\$.description").value(desc))
+    }
+
+    @Test
+    fun testStoreNewAdWithPhoto() {
+        val imageUrl = "photo-url"
+        val newItem = NewAdItem(deviceId = "dev-Id", name = "name", description = "desc", phone = "123456", price = 10.0, duration = 60_000, lat = 50.0, long = 10.0)
+        val adItem = newItem.toAdItem().apply {
+            photoUrl = imageUrl
+        }
+        val mockImage = MockMultipartFile("photo", "User Photo".toByteArray())
+        val mockJson = MockMultipartFile("ad", "", "application/json", mapper.writeValueAsString(newItem).toByteArray())
+
+
+        whenever(adsService.saveNewAd(any())).thenReturn(adItem)
+        whenever(storageService.store(any())).thenReturn(imageUrl)
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/items")
+                .file(mockImage)
+                .file(mockJson))
+                .andExpect(status().isCreated)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("\$.name").value(newItem.name))
+                .andExpect(jsonPath("\$.description").value(newItem.description))
+                .andExpect(jsonPath("\$.photoUrl").value(imageUrl))
+                .andExpect(jsonPath("\$.phoneObfuscated").exists())
+                .andExpect(jsonPath("\$.validUntilMs", Matchers.greaterThan(System.currentTimeMillis())))
+                .andExpect(jsonPath("\$.id").exists())
+    }
+
+    @Test
+    fun testStoreNewAdNoPhoto() {
+        val newItem = NewAdItem(deviceId = "dev-Id", name = "name", description = "desc", phone = "12345", price = 10.0, duration = 60_000, lat = 50.0, long = 10.0)
+        val adItem = newItem.toAdItem()
+        val mockJson = MockMultipartFile("ad", "", "application/json", mapper.writeValueAsString(newItem).toByteArray())
+        whenever(adsService.saveNewAd(any())).thenReturn(adItem)
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/items")
+                .file(mockJson))
+                .andExpect(status().isCreated)
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.photoUrl", Matchers.isEmptyString()))
     }
 }

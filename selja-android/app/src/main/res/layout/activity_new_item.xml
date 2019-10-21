@@ -123,7 +123,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline"
                 app:layout_constraintTop_toBottomOf="@id/til_contact"
-                app:maxValue="@{viewModel.maxValidTime}" />
+                app:maxValue="@{viewModel.maxDuration}" />
 
             <TextView
                 android:id="@+id/tv_locationLabel"

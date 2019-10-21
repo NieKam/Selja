@@ -76,7 +76,7 @@
                 app:detailedView="@{viewModel.detailedView}"
                 app:layout_constraintStart_toEndOf="@id/iv_itemImage"
                 app:layout_constraintTop_toTopOf="@id/iv_itemImage"
-                app:timestamp="@{viewModel.oAdItem.validUntil}" />
+                app:timestamp="@{viewModel.oAdItem.validUntilMs}" />
 
             <TextView
                 android:id="@+id/tv_phone"

@@ -1,10 +1,7 @@
 package io.selja.repository
 
 import android.location.Location
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import io.selja.api.SeljaApi
 import io.selja.model.NewAdItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,9 +11,12 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
+import org.mockito.Mockito.any
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
+import java.io.File
 
 
 @RunWith(JUnit4::class)
@@ -63,24 +63,26 @@ class AdItemsDataSourceTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `test creating new ad`() = runBlockingTest {
+    fun `test creating new ad without photo`() = runBlockingTest {
         val newAdItem = mock(NewAdItem::class.java)
         val deferred = async {
             dataModel.createNew(newAdItem)
         }
 
         deferred.await()
-        verify(mockApi).createNewAd(newAdItem)
+        verify(mockApi).createNewAd(newAdItem, null)
     }
+
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `test file upload`() = runBlockingTest {
+    fun `test creating new ad with photo`() = runBlockingTest {
+        val newAdItem = mock(NewAdItem::class.java)
         val deferred = async {
-            dataModel.uploadFile(1, "path")
+            dataModel.createNew(newAdItem,  "path")
         }
 
         deferred.await()
-        verify(mockApi).uploadPhoto(any(), eq(1L))
+        verify(mockApi).createNewAd(eq(newAdItem), notNull())
     }
 }

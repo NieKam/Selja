@@ -97,9 +97,9 @@ class ItemsOverviewViewModelTest {
         val adItem = mock(AdItem::class.java)
         whenever(dataModel.getAll(anyOrNull())).thenReturn(listOf(adItem))
 
-        viewModel.init(false)
+        viewModel.initPermissionState(false)
 
-        assertFalse(viewModel.isPermissionGranted.get())
+        assertFalse(viewModel.hasLocationPermission.get())
         verify(dataModel).getAll(null)
     }
 
@@ -111,9 +111,9 @@ class ItemsOverviewViewModelTest {
         whenever(locationRepository.getLastKnownLocation()).thenReturn(location)
         whenever(dataModel.getAll(anyOrNull())).thenReturn(listOf(adItem))
 
-        viewModel.init(true)
+        viewModel.initPermissionState(true)
 
-        assertTrue(viewModel.isPermissionGranted.get())
+        assertTrue(viewModel.hasLocationPermission.get())
         verify(dataModel).getAll(location)
     }
 
@@ -124,9 +124,9 @@ class ItemsOverviewViewModelTest {
         whenever(locationRepository.getLastKnownLocation()).thenReturn(null)
         whenever(dataModel.getAll(anyOrNull())).thenReturn(listOf(adItem))
 
-        viewModel.init(true)
+        viewModel.initPermissionState(true)
 
-        assertTrue(viewModel.isPermissionGranted.get())
+        assertTrue(viewModel.hasLocationPermission.get())
         verify(locationRepository).startLocationUpdates()
     }
 

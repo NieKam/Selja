@@ -31,7 +31,7 @@ class AdsRepositoryIntegrationTest {
     fun whenFindOlderThan_thenReturnAd() {
         // given
         val location = Location(lat = 0.0, long = 0.0)
-        val ad = AdItem(validUntil = now, location = location)
+        val ad = AdItem(validUntilMs = now, location = location)
 
         //entityManager.persist(location)
         entityManager.persist(ad)
@@ -50,7 +50,7 @@ class AdsRepositoryIntegrationTest {
         // given
         val now = System.currentTimeMillis()
         val location = Location(lat = 0.0, long = 0.0)
-        val ad = AdItem(validUntil = tomorrow, location = location)
+        val ad = AdItem(validUntilMs = tomorrow, location = location)
 
         entityManager.persist(ad)
         entityManager.flush()

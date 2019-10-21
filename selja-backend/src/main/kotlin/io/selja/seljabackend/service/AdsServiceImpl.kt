@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class AdsServiceImpl : AdsService {
+
     @Autowired
     lateinit var repository: AdsRepository
 
@@ -18,7 +19,7 @@ class AdsServiceImpl : AdsService {
         }
 
         val now = now()
-        val allItems = repository.findAllInArea(location.lat, location.long, RADIUS_KM).filter { it.validUntil >= now }
+        val allItems = repository.findAllInArea(location.lat, location.long, RADIUS_KM).filter { it.validUntilMs >= now }
         allItems.forEach {
             it.distanceInKm = requireNotNull(it.location).getDistanceTo(location)
         }
@@ -28,7 +29,7 @@ class AdsServiceImpl : AdsService {
 
     override fun getOne(id: Long, location: Location?): AdItem {
         val optional = repository.findById(id)
-        if (!optional.isPresent || optional.get().validUntil < now()) {
+        if (!optional.isPresent || optional.get().validUntilMs < now()) {
             throw AdNotFoundException(id)
         }
 
@@ -39,25 +40,8 @@ class AdsServiceImpl : AdsService {
         return adItem
     }
 
-    override fun createNewAd(newAdItem: NewAdItem): AdItem {
-        return repository.save(newAdItem.toAdItem())
-    }
-
-    override fun addPhotoToItem(id: Long, url: String): AdItem {
-        val optional = repository.findById(id)
-        if (!optional.isPresent) {
-            throw AdNotFoundException(id)
-        }
-
-        val adItem = optional.get()
-        if (adItem.photoUrl.isNotEmpty()) {
-            // Prevent overwriting images
-            return adItem
-        }
-
-        adItem.photoUrl = url
-        repository.save(adItem)
-        return adItem
+    override fun saveNewAd(adItem: AdItem): AdItem {
+        return repository.save(adItem)
     }
 
     private fun now() = System.currentTimeMillis()

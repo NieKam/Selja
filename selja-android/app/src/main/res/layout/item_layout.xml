@@ -69,10 +69,10 @@
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_default"
             android:drawableStart="@drawable/ic_time"
-            android:drawablePadding="@dimen/margin_small"
+            android:drawablePadding="@dimen/margin_default"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/guideline"
-            app:timestamp="@{viewModel.adItem.validUntil}" />
+            app:timestamp="@{viewModel.adItem.validUntilMs}" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_default"
             android:drawableStart="@drawable/ic_near_me"
-            android:drawablePadding="@dimen/margin_small"
+            android:drawablePadding="@dimen/margin_default"
             android:visibility="@{viewModel.mine ? View.GONE : View.VISIBLE}"
             app:distanceText="@{viewModel.adItem.distanceInKm}"
             app:layout_constraintStart_toEndOf="@id/guideline"

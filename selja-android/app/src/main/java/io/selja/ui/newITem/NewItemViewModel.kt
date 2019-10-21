@@ -10,7 +10,6 @@ import io.selja.model.NewAdItem
 import io.selja.repository.AdItemsDataModel
 import io.selja.repository.LocationRepository
 import io.selja.utils.toHumanReadableString
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
@@ -23,7 +22,7 @@ class NewItemViewModel(
 ) : BaseViewModel() {
 
     val newItemLiveData = MutableLiveData<AdItem>()
-    val maxValidTime = 7 // days
+    val maxDuration = 7 // days
     val location = ObservableField<String>()
 
     var lastLocation: Location? = null
@@ -62,24 +61,15 @@ class NewItemViewModel(
                 description = desc,
                 phone = contact,
                 price = price,
-                validFor = TimeUnit.DAYS.toMillis((itemPosition + 1).toLong()),
+                durationMs = TimeUnit.DAYS.toMillis((itemPosition + 1).toLong()),
                 lat = notNullLocation.latitude,
                 long = notNullLocation.longitude,
                 deviceId = deviceId.getDeviceId()
             )
 
-            val addedItem = withContext(backgroundDispatcher) { dataModel.createNew(newItem) }
 
-            if (absolutePath.isNullOrEmpty()) {
-                newItemLiveData.value = addedItem
-                loading.set(false)
-                return@launch
-            }
-
-            newItemLiveData.value = withContext(backgroundDispatcher) {
-                dataModel.uploadFile(addedItem.id, requireNotNull(absolutePath))
-            }
-
+            val addedItem = withContext(backgroundDispatcher) { dataModel.createNew(newItem, absolutePath) }
+            newItemLiveData.value = addedItem
             loading.set(false)
         }
 
