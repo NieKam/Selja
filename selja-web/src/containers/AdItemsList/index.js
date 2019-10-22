@@ -1,5 +1,6 @@
 import { withRouter } from 'react-router-dom';
 import * as adItemApi from '../../helpers/adItemApi'
+import * as idHelper from '../../helpers/id'
 import AdItem from '../../components/AdItem'
 import Loading from '../../components/Loading';
 import React, { Component } from 'react';
@@ -38,13 +39,14 @@ class AdItemsList extends Component {
 
     render() {
         const { adItems } = this.state
+        const uuid = idHelper.getUuid()
 
         return (
             <div>
                 {
                     this.state.fetched ?
                         <div>
-                            {adItems.map(item => <AdItem key={item.id} ad={item} onClick={this.handleClick} />)}
+                            {adItems.map(item => <AdItem key={item.id} ad={item} onClick={this.handleClick} isOwnedAd={uuid === item.deviceId} />)}
                         </div>
                         : <Loading />
                 }

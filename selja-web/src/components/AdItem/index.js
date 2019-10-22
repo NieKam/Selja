@@ -1,3 +1,4 @@
+import { CardActionArea } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles"
 import { photoUrl } from "../../helpers/routes"
 import Card from "@material-ui/core/Card"
@@ -6,16 +7,16 @@ import CardMedia from "@material-ui/core/CardMedia"
 import grey from "@material-ui/core/colors/grey"
 import Location from "../Location"
 import React from "react"
+import red from "@material-ui/core/colors/red"
 import Timer from "../Timer"
 import Typography from "@material-ui/core/Typography"
-import { CardActionArea } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     card: {
         display: "flex",
         border: 1,
         flexDirection: "row",
-        borderColor: grey[200],
+        borderColor: props => props.isOwnedAd ? red[600] : grey[200],
         borderStyle: "solid",
         marginBottom: theme.spacing(1)
     },
@@ -50,8 +51,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function AdItem(props) {
-    const classes = useStyles()
     const adItem = props.ad
+    const isOwnedAd = props.isOwnedAd;
+    const classes = useStyles(props)
 
     return (
         <Card className={classes.card} border={5} onClick={() => props.onClick(adItem.id)}>
@@ -74,7 +76,7 @@ export default function AdItem(props) {
                         <Timer classes={classes.timer} validUntil={adItem.validUntilMs} />
                     </CardContent>
                 </div>
-                <Location distance={adItem.distanceInKm} />
+                {!isOwnedAd && <Location distance={adItem.distanceInKm} />}
             </CardActionArea>
         </Card>
     )

@@ -4,7 +4,8 @@ import { previewPhotoUrl } from "../../helpers/routes"
 import { withRouter } from 'react-router-dom';
 import { withStyles } from "@material-ui/styles"
 import * as _ from 'ramda'
-import * as adItemApi from '../../helpers/adItemApi'
+import * as adItemApi from "../../helpers/adItemApi"
+import * as idHelper from "../../helpers/id"
 import NumberFormatInput from '../../components/NumberFormatInput'
 import PropTypes from "prop-types"
 import React, { Component } from 'react';
@@ -71,9 +72,8 @@ class NewItemForm extends Component {
 
     onFormSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true)
-        console.log("submit")
         let addedItem = await adItemApi.createNewAd({
-            deviceId: "3232",
+            deviceId: idHelper.getUuid(),
             name: values.name,
             description: values.description,
             price: values.price,

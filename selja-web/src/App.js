@@ -8,6 +8,7 @@ import { Container } from '@material-ui/core'
 import NewItemForm from './containers/NewItemForm'
 import NotFound from './containers/NotFound/index.js'
 import React, { Component } from 'react';
+import * as idHelper from './helpers/id';
 
 class App extends Component {
   state = {
@@ -25,6 +26,11 @@ class App extends Component {
       },
       err => console.log(err)
     )
+
+    if (!idHelper.getUuid()) {
+      console.log("Generate uuid")
+      idHelper.generateUuid()
+    }
   }
 
   render() {
