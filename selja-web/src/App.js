@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import AdItemDetails from './containers/AdItemsDetails'
 import AdItemsList from './containers/AdItemsList'
 import Footer from './components/Footer';

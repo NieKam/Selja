@@ -10,6 +10,7 @@
     <string name="description">Description:</string>
     <string name="name">Name</string>
     <string name="phone">Phone</string>
+    <string name="phone_hint">+123 456 789</string>
     <string name="price">Price</string>
     <string name="how_long">Duration (days):</string>
     <string name="location">Your location:</string>
@@ -18,6 +19,7 @@
     <string name="minutes">%1$d min</string>
     <string name="field_not_empty">Field cannot be empty</string>
     <string name="unknown_error">Error occurred - try again</string>
+    <string name="upload_photo">Add photo</string>
 
     <plurals name="days">
         <item quantity="one">%d day</item>

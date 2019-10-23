@@ -1,5 +1,5 @@
 import { photoUrl } from "../../helpers/routes"
-import { Typography, Paper, Container, Chip } from "@material-ui/core";
+import { Typography, Container, Chip } from "@material-ui/core";
 import { withRouter } from 'react-router-dom';
 import { withStyles } from "@material-ui/styles"
 import * as adItemApi from '../../helpers/adItemApi'
@@ -91,7 +91,7 @@ class AdItemsDetails extends React.Component {
                 {
                     this.state.fetched ?
                         <Card className={classes.card}>
-                            <CardHeader title={adItem.name} subheader={adItem.price + ' ' + adItem.currency}
+                            <CardHeader title={adItem.name} subheader={adItem.price}
                                 action={<Timer validUntil={adItem.validUntilMs} />} />
                             <CardMedia
                                 className={classes.media}

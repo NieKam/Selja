@@ -2,7 +2,6 @@ package io.selja.seljabackend.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonView
-import io.selja.seljabackend.controller.CURRENCY
 import io.selja.seljabackend.views.Views
 import javax.persistence.*
 
@@ -33,10 +32,7 @@ data class AdItem(
         var photoUrl: String = "",
 
         @JsonView(Views.Short::class)
-        val price: Double = 0.0,
-
-        @JsonView(Views.Short::class)
-        val currency: String = CURRENCY,
+        val price: String = "",
 
         @JsonIgnore
         @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])

@@ -25,9 +25,11 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/iv_itemPicture"
-            android:layout_width="@dimen/image_on_list_size"
-            android:layout_height="@dimen/image_on_list_size"
+            android:layout_width="@dimen/list_item_height"
+            android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
             android:scaleType="centerInside"
             android:transitionName="mainImageTransition"
             app:imageUrl="@{viewModel.imageUrl}"
@@ -41,12 +43,13 @@
         <TextView
             android:id="@+id/tv_name"
             style="@style/title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_default"
             android:layout_marginTop="@dimen/margin_default"
             android:text="@{viewModel.adItem.name}"
             app:layout_constraintStart_toEndOf="@id/iv_itemPicture"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Item" />
 
@@ -56,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
-            android:text="@{viewModel.price}"
+            android:text="@{viewModel.adItem.price}"
             app:layout_constraintStart_toStartOf="@id/tv_name"
             app:layout_constraintTop_toBottomOf="@id/tv_name"
             tools:text="$15" />
@@ -79,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.72" />
+            app:layout_constraintGuide_percent="0.70" />
 
         <TextView
             android:id="@+id/tv_location"

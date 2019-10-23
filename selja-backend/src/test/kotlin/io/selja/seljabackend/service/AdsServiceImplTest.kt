@@ -3,6 +3,7 @@ package io.selja.seljabackend.service
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
+import io.selja.seljabackend.controller.CURRENCY
 import io.selja.seljabackend.controller.RADIUS_KM
 import io.selja.seljabackend.exception.AdNotFoundException
 import io.selja.seljabackend.model.AdItem
@@ -105,7 +106,7 @@ class AdsServiceImplTest {
         val obfuscatedPhone = "123****9"
         val url = "images/dcxsdf"
 
-        val newItem = NewAdItem(deviceId = "dev-Id", name = "name", description = "desc", phone = phone, price = 10.0, duration = 60_000, lat = 50.0, long = 10.0)
+        val newItem = NewAdItem(deviceId = "dev-Id", name = "name", description = "desc", phone = phone, price = 10000.5, duration = 60_000, lat = 50.0, long = 10.0)
         val adItem = newItem.toAdItem()
         adItem.photoUrl = url
         whenever(adsRepository.save(any<AdItem>())).thenReturn(adItem)
@@ -116,7 +117,7 @@ class AdsServiceImplTest {
         assertThat(ad.name).isEqualTo(newItem.name)
         assertThat(ad.description).isEqualTo(newItem.description)
         assertThat(ad.phone).isEqualTo(newItem.phone)
-        assertThat(ad.price).isEqualTo(newItem.price)
+        assertThat(ad.price).isEqualTo("10,000.5 zł")
         assertThat(ad.validUntilMs).isGreaterThan(now)
         assertThat(ad.location?.lat).isEqualTo(newItem.lat)
         assertThat(ad.location?.long).isEqualTo(newItem.long)

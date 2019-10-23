@@ -1,5 +1,7 @@
 package io.selja.seljabackend.model
 
+import io.selja.seljabackend.controller.CURRENCY
+import java.text.NumberFormat
 import javax.validation.constraints.*
 
 data class NewAdItem(
@@ -31,16 +33,19 @@ data class NewAdItem(
         val long: Double
 )
 
-fun NewAdItem.toAdItem() = AdItem(
-        deviceId = this.deviceId,
-        name = this.name,
-        description = this.description,
-        price = this.price,
-        phone = this.phone,
-        phoneObfuscated = this.phone.obfuscate(),
-        location = Location(lat = this.lat, long = this.long),
-        validUntilMs = System.currentTimeMillis() + this.duration
-)
+fun NewAdItem.toAdItem(): AdItem {
+    val priceFormatted = NumberFormat.getNumberInstance().format(this.price);
+    return AdItem(
+            deviceId = this.deviceId,
+            name = this.name,
+            description = this.description,
+            price = "$priceFormatted $CURRENCY",
+            phone = this.phone,
+            phoneObfuscated = this.phone.obfuscate(),
+            location = Location(lat = this.lat, long = this.long),
+            validUntilMs = System.currentTimeMillis() + this.duration
+    )
+}
 
 fun String.obfuscate(): String {
     val mask = "****"

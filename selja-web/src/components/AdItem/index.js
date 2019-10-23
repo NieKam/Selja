@@ -71,7 +71,7 @@ export default function AdItem(props) {
                             {adItem.name}
                         </Typography>
                         <Typography variant="h5" color="textPrimary" className={classes.mainText}>
-                            {adItem.price} {adItem.currency}
+                            {adItem.price}
                         </Typography>
                         <Timer classes={classes.timer} validUntil={adItem.validUntilMs} />
                     </CardContent>

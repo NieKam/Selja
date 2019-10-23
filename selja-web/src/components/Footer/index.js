@@ -14,6 +14,6 @@ export default function Footer() {
     const url = "https://github.com/NieKam/Selja"
 
     return (
-        <Typography className={classes.footer} variant="subtitle1" color="textSecondary">Source on 💾 and <Link color="inherit" href={url}>Github</Link>, 2019</Typography>
+        <Typography className={classes.footer} variant="subtitle1" color="textSecondary">Source on <span role="img" aria-label="sheep">💾</span> and <Link color="inherit" href={url}>Github</Link>, 2019</Typography>
     )
 }

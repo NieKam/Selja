@@ -74,8 +74,7 @@ class AdItemDetailsViewModelTest {
     @Test
     fun testGetPrice() {
         val adItemMock = mock(AdItem::class.java)
-        whenever(adItemMock.currency).thenReturn("zl")
-        whenever(adItemMock.price).thenReturn(199.0)
+        whenever(adItemMock.price).thenReturn("199 zl")
 
         viewModel.oAdItem.set(adItemMock)
         assertEquals(adItemMock.getPriceFormatted(), viewModel.getPrice())

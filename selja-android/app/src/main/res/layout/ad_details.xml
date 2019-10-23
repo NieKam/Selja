@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_large"
-                    android:text="@{viewModel.price}"
+                    android:text="@{viewModel.oAdItem.price}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="$15" />
@@ -56,18 +56,24 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:timestamp="@{viewModel.oAdItem.validUntilMs}" />
 
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/image_guideline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.13" />
+
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/iv_itemImage"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/item_details_image_size"
                     android:layout_marginStart="@dimen/margin_default"
-                    android:layout_marginTop="@dimen/margin_large"
                     android:layout_marginEnd="@dimen/margin_default"
                     android:scaleType="fitXY"
                     android:transitionName="mainImageTransition"
                     app:imageUrl="@{viewModel.imageUrl}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_price"
+                    app:layout_constraintTop_toBottomOf="@id/image_guideline"
                     fresco:placeholderImage="@drawable/ic_no_photo"
                     fresco:roundedCornerRadius="8dp"
                     tools:srcCompat="@drawable/ic_no_photo" />
@@ -108,19 +114,19 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_phone"
                     tools:text="14 km" />
 
+
                 <TextView
                     android:id="@+id/tv_description"
                     style="@style/subItem"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_default"
-                    android:layout_marginTop="@dimen/margin_large"
                     android:layout_marginEnd="@dimen/margin_default"
                     android:text="@{viewModel.oAdItem.description}"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_location" />
-
 
                 <com.github.ybq.android.spinkit.SpinKitView
                     android:id="@+id/spinKit"

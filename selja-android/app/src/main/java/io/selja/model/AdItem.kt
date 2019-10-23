@@ -31,10 +31,7 @@ data class AdItem(
     val phoneObfuscated: String = "",
 
     @field:Json(name = "price")
-    val price: Double = 0.0,
-
-    @field:Json(name = "currency")
-    val currency: String = "",
+    val price: String = "",
 
     @field:Json(name = "distanceInKm")
     var distanceInKm: Double = 0.0,
@@ -42,7 +39,5 @@ data class AdItem(
     @field:Json(name = "validUntilMs")
     val validUntilMs: Long = 0
 ) : Parcelable
-
-fun AdItem.getPriceFormatted() = "${this.price} ${this.currency}"
 
 fun AdItem.imageUrlWithHost() = "${BuildConfig.BASE_URL}${this.imageUrl}"

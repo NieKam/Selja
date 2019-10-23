@@ -104,7 +104,7 @@ class NewItemForm extends Component {
 
         if (!values.price) {
             errors.price = "Required"
-        } else if (values.price == 0.0) {
+        } else if (values.price === 0.0) {
             errors.price = "Price cannot be zero"
         }
 
@@ -226,7 +226,7 @@ class NewItemForm extends Component {
                                     </label>
                                 </Container>
                                 <Typography color="error" align="center" variant="h6">{this.locationError}</Typography>
-                                <Fab type="submit" variant="extended" aria-label="delete" className={classes.button} disabled={this.state.disabled || isSubmitting} >
+                                <Fab type="submit" variant="extended" aria-label="delete" className={classes.button} disabled={this.state.disabled || isSubmitting || this.locationError} >
                                     Save advertisement
                                 </Fab>
                             </Container>

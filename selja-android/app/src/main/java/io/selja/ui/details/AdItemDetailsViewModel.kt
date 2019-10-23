@@ -5,7 +5,6 @@ import androidx.databinding.ObservableField
 import io.selja.base.BaseViewModel
 import io.selja.base.DeviceId
 import io.selja.model.AdItem
-import io.selja.model.getPriceFormatted
 import io.selja.model.imageUrlWithHost
 import io.selja.repository.AdItemsDataModel
 import io.selja.repository.LocationRepository
@@ -32,7 +31,6 @@ class AdItemDetailsViewModel(
         }
     }
 
-    fun getPrice() = oAdItem.get()?.getPriceFormatted()
     fun getImageUrl() = oAdItem.get()?.imageUrlWithHost()
     fun isMine() = oAdItem.get()?.deviceId == deviceId.getDeviceId()
 

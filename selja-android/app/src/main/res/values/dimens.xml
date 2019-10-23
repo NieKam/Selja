@@ -6,7 +6,6 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="icon_size">32dp</dimen>
-    <dimen name="image_on_list_size">80dp</dimen>
     <dimen name="list_item_height">110dp</dimen>
     <dimen name="item_details_image_size">160dp</dimen>
     <dimen name="spinner_text_size">18sp</dimen>

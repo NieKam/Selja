@@ -1,6 +1,5 @@
 import { Chip } from "@material-ui/core";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import PropTypes from "prop-types"
 import React from "react"
 
 class Timer extends React.Component {

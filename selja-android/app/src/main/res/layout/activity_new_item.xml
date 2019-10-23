@@ -19,6 +19,7 @@
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_default"
@@ -85,7 +86,7 @@
                     android:id="@+id/et_contact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/phone"
+                    android:hint="@string/phone_hint"
                     android:inputType="phone"
                     android:nextFocusLeft="@id/et_price"
                     android:nextFocusUp="@id/et_price" />
@@ -98,9 +99,8 @@
                 android:layout_margin="@dimen/fab_margin"
                 android:transitionName="fabTransition"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/ic_camera" />
+                app:layout_constraintStart_toEndOf="parent"
+                app:srcCompat="@drawable/ic_cloud_upload" />
 
             <TextView
                 android:id="@+id/tv_howLongLabel"
@@ -183,16 +183,26 @@
                 android:layout_width="@dimen/item_details_image_size"
                 android:layout_height="@dimen/item_details_image_size"
                 android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_small"
                 android:background="?android:attr/selectableItemBackground"
                 android:scaleType="fitCenter"
                 android:transitionName="mainImageTransition"
                 app:imageUrl="@{viewModel.photoFileUri}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_description"
-                fresco:placeholderImage="@drawable/ic_no_photo"
                 fresco:roundedCornerRadius="8dp"
                 tools:srcCompat="@drawable/ic_no_photo" />
+
+            <Button
+                android:id="@+id/btn_addPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small"
+                android:background="@drawable/outline_round_background"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="@string/upload_photo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_itemPicture" />
 
             <com.github.ybq.android.spinkit.SpinKitView
                 android:id="@+id/spin_kit"

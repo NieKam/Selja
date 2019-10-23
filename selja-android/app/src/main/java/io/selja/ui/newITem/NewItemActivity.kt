@@ -5,8 +5,8 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding2.view.RxView
@@ -41,7 +41,6 @@ class NewItemActivity : BaseActivity<NewItemViewModel>() {
     private val disposables = CompositeDisposable()
 
     private lateinit var binding: ActivityNewItemBinding
-    private var saveMenuItem: MenuItem? = null
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,10 +49,13 @@ class NewItemActivity : BaseActivity<NewItemViewModel>() {
             viewModel = this@NewItemActivity.viewModel
         }
 
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.tvLocation.setOnClickListener { showMap(viewModel.lastLocation?.toIntentString()) }
-        RxView.clicks(binding.fab).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe { openCamera() }
+        RxView.clicks(binding.fab).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe { saveItem() }
+        RxView.clicks(binding.btnAddPhoto).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe { openCamera() }
         disposables.add(subscribeToInputValidation())
+        binding.fab.isEnabled = false
     }
 
     private fun openCamera() {
@@ -67,11 +69,14 @@ class NewItemActivity : BaseActivity<NewItemViewModel>() {
         startActivityForResult(cameraHelper.getCameraIntent(this, photoFile), REQUEST_CODE)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.new_item_menu, menu)
-        saveMenuItem = menu.getItem(0)
-        setMenuItemEnabled(false)
-        return true
+    private fun saveItem() {
+        viewModel.save(
+            binding.etName.stringValue(),
+            binding.etDescription.stringValue(),
+            binding.etContact.stringValue(),
+            binding.etPrice.doubleValue(),
+            binding.spinner.selectedItemPosition
+        )
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -87,17 +92,6 @@ class NewItemActivity : BaseActivity<NewItemViewModel>() {
             item.itemId == android.R.id.home -> {
                 onBackPressed()
                 true
-            }
-
-            item.itemId == R.id.save_ad -> {
-                viewModel.save(
-                    binding.etName.stringValue(),
-                    binding.etDescription.stringValue(),
-                    binding.etContact.stringValue(),
-                    binding.etPrice.doubleValue(),
-                    binding.spinner.selectedItemPosition
-                )
-                return true
             }
 
             else -> super.onOptionsItemSelected(item)
@@ -144,18 +138,33 @@ class NewItemActivity : BaseActivity<NewItemViewModel>() {
                         && isPriceValid(price.toString()) && isDescValid(desc.toString())
             })
             .subscribe { isOk ->
-                setMenuItemEnabled(isOk)
+                showUploadFab(isOk)
             }
     }
 
-    private fun setMenuItemEnabled(isEnabled: Boolean) {
-        saveMenuItem?.let {
-            if (it.isEnabled == isEnabled) {
+    private fun showUploadFab(isEnabled: Boolean) {
+        binding.let {
+            if (it.fab.isEnabled == isEnabled) {
                 return
             }
 
-            it.isEnabled = isEnabled
-            it.icon.alpha = if (isEnabled) 255 else 120
+            it.fab.isEnabled = isEnabled
+
+            val margin = resources.getDimensionPixelOffset(R.dimen.fab_margin)
+            val set = ConstraintSet().apply {
+                clone(it.clRoot)
+                clear(R.id.fab, ConstraintSet.START)
+                clear(R.id.fab, ConstraintSet.END)
+            }
+
+            set.connect(
+                R.id.fab,
+                if (isEnabled) ConstraintSet.END else ConstraintSet.START,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.END,
+                margin
+            )
+            set.applyTo(it.clRoot)
         }
     }
 
