@@ -2,7 +2,9 @@ package io.selja.seljabackend.service
 
 import io.selja.seljabackend.controller.RADIUS_KM
 import io.selja.seljabackend.exception.AdNotFoundException
-import io.selja.seljabackend.model.*
+import io.selja.seljabackend.model.AdItem
+import io.selja.seljabackend.model.Location
+import io.selja.seljabackend.model.getDistanceTo
 import io.selja.seljabackend.repository.AdsRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

@@ -3,7 +3,6 @@ package io.selja.seljabackend.service
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
-import io.selja.seljabackend.controller.CURRENCY
 import io.selja.seljabackend.controller.RADIUS_KM
 import io.selja.seljabackend.exception.AdNotFoundException
 import io.selja.seljabackend.model.AdItem
@@ -12,17 +11,18 @@ import io.selja.seljabackend.model.NewAdItem
 import io.selja.seljabackend.model.toAdItem
 import io.selja.seljabackend.repository.AdsRepository
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Bean
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 class AdsServiceImplTest {
 
     @TestConfiguration
@@ -44,9 +44,11 @@ class AdsServiceImplTest {
     private val locationA = Location(1, 50.0, 10.0)
     private val locationB = Location(1, 50.05, 10.0)
 
-    @Test(expected = AdNotFoundException::class)
+    @Test
     fun whenAdIsNotAvailable_thenAnExceptionIsThrown() {
-        adsService.getOne(1, null)
+        Assertions.assertThrows(AdNotFoundException::class.java) {
+            adsService.getOne(1, null)
+        }
     }
 
     @Test

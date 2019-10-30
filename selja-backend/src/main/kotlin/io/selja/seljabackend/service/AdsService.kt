@@ -9,5 +9,5 @@ interface AdsService {
 
     fun getOne(id: Long, location: Location?): AdItem
 
-    fun saveNewAd(adItem : AdItem): AdItem
+    fun saveNewAd(adItem: AdItem): AdItem
 }

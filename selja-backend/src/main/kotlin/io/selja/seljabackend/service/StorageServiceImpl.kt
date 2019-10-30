@@ -15,7 +15,7 @@ class StorageServiceImpl : StorageService {
         if (url.isNullOrEmpty()) {
             return
         }
-        Files.delete(Paths.get(url!!))
+        Files.delete(Paths.get(url))
     }
 
     override fun store(file: MultipartFile): String {
