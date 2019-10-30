@@ -131,7 +131,7 @@ Create a user that matches configuration (or change configuration file applicati
 
 Once user is created and postgresql is running, go to main directory and type
 
-`./gradlew bootRun`
+`./mvnw spring-boot:run`
 
 ### Frontend
 
