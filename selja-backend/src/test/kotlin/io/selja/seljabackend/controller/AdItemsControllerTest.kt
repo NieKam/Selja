@@ -49,7 +49,7 @@ class AdItemsControllerTest() {
         mockMvc.perform(MockMvcRequestBuilders.get("/items")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("\$.[0].name").value(ad1.name))
                 .andExpect(jsonPath("\$.[1].name").value(ad2.name))
                 .andExpect(jsonPath("\$.[0].description").doesNotExist())
@@ -66,7 +66,7 @@ class AdItemsControllerTest() {
         mockMvc.perform(MockMvcRequestBuilders.get("/items/{id}", 1)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("\$.name").value(ad.name))
                 .andExpect(jsonPath("\$.description").value(desc))
     }
@@ -88,7 +88,7 @@ class AdItemsControllerTest() {
                 .file(mockImage)
                 .file(mockJson))
                 .andExpect(status().isCreated)
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("\$.name").value(newItem.name))
                 .andExpect(jsonPath("\$.description").value(newItem.description))
                 .andExpect(jsonPath("\$.photoUrl").value(imageUrl))
@@ -107,7 +107,7 @@ class AdItemsControllerTest() {
         mockMvc.perform(MockMvcRequestBuilders.multipart("/items")
                 .file(mockJson))
                 .andExpect(status().isCreated)
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.photoUrl", Matchers.isEmptyString()))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.photoUrl", Matchers.emptyString()))
     }
 }
