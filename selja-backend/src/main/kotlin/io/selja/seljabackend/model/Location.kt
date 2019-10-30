@@ -1,14 +1,13 @@
 package io.selja.seljabackend.model
 
 import io.selja.seljabackend.exception.BadLocationException
-import java.lang.IllegalStateException
+import java.math.BigDecimal
+import java.math.RoundingMode
 import javax.persistence.*
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
-import java.math.BigDecimal
-import java.math.RoundingMode
 
 
 @Entity
@@ -38,7 +37,7 @@ data class Location(
     }
 }
 
-fun Double.roundTo(decimalPlaces : Int) : Double {
+fun Double.roundTo(decimalPlaces: Int): Double {
     if (decimalPlaces < 0) {
         return this
     }
