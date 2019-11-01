@@ -27,7 +27,7 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         viewModel.let {
-            it.onAttached()
+            it.onDetached()
             it.errors.removeObserver(itemsObserver)
         }
     }
