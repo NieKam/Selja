@@ -1,4 +1,4 @@
-package io.selja.seljabackend.views
+package io.selja.seljabackend.domain.views
 
 object Views {
     interface Short

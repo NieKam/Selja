@@ -1,4 +1,4 @@
-package io.selja.seljabackend.model
+package io.selja.seljabackend.domain
 
 import org.springframework.http.HttpStatus
 

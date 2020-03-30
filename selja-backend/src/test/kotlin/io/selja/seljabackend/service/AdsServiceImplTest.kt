@@ -3,12 +3,12 @@ package io.selja.seljabackend.service
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
-import io.selja.seljabackend.controller.RADIUS_KM
-import io.selja.seljabackend.exception.AdNotFoundException
-import io.selja.seljabackend.model.AdItem
-import io.selja.seljabackend.model.Location
-import io.selja.seljabackend.model.NewAdItem
-import io.selja.seljabackend.model.toAdItem
+import io.selja.seljabackend.configuration.RADIUS_KM
+import io.selja.seljabackend.web.rest.errors.AdNotFoundException
+import io.selja.seljabackend.domain.AdItem
+import io.selja.seljabackend.domain.Location
+import io.selja.seljabackend.domain.NewAdItem
+import io.selja.seljabackend.domain.toAdItem
 import io.selja.seljabackend.repository.AdsRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
@@ -47,7 +47,7 @@ class AdsServiceImplTest {
     @Test
     fun whenAdIsNotAvailable_thenAnExceptionIsThrown() {
         Assertions.assertThrows(AdNotFoundException::class.java) {
-            adsService.getOne(1, null)
+            adsService.findOne(1, null)
         }
     }
 
@@ -56,7 +56,7 @@ class AdsServiceImplTest {
         val ad = AdItem(location = Location(1, 50.0, 10.0), name = "Item")
         whenever(adsRepository.findAll()).thenReturn(mutableListOf(ad))
 
-        val found = adsService.getAll(null)
+        val found = adsService.findAll(null)
 
         assertThat(found.size).isEqualTo(1)
         assertThat(found[0].id).isEqualTo(ad.id)
@@ -65,11 +65,15 @@ class AdsServiceImplTest {
 
     @Test
     fun getAllIfLocationIsNotNull_thenDistanceShouldBeLowerThanRadius() {
+        val now = System.currentTimeMillis()
+        val ad = AdItem(location = locationA, validUntilMs = now + TimeUnit.DAYS.toMillis(1))
+        whenever(adsRepository.findAllInArea(
+                lat = locationB.lat,
+                long = locationB.long,
+                radiusKm = RADIUS_KM,
+                timestamp = now)).thenReturn(mutableListOf(ad))
 
-        val ad = AdItem(location = locationA, validUntilMs = System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
-        whenever(adsRepository.findAllInArea(lat = locationB.lat, long = locationB.long, radiusKm = RADIUS_KM)).thenReturn(mutableListOf(ad))
-
-        val found = adsService.getAll(locationB)
+        val found = adsService.findAll(locationB)
 
         assertThat(found.size).isEqualTo(1)
         assertThat(found[0].id).isEqualTo(ad.id)
@@ -83,7 +87,7 @@ class AdsServiceImplTest {
         val ad = AdItem(location = locationA, name = "Item", validUntilMs = tomorrow)
         whenever(adsRepository.findById(eq(id))).thenReturn(Optional.of(ad))
 
-        val found = adsService.getOne(id, locationB)
+        val found = adsService.findOne(id, locationB)
 
         assertThat(found.id).isEqualTo(ad.id)
         assertThat(found.distanceInKm).isGreaterThan(0.0)
@@ -96,7 +100,7 @@ class AdsServiceImplTest {
         val ad = AdItem(id = id, location = locationA, name = "Item", validUntilMs = tomorrow)
         whenever(adsRepository.findById(eq(id))).thenReturn(Optional.of(ad))
 
-        val found = adsService.getOne(id, null)
+        val found = adsService.findOne(id, null)
 
         assertThat(found.id).isEqualTo(ad.id)
         assertThat(found.distanceInKm).isEqualTo(0.0)
@@ -113,7 +117,7 @@ class AdsServiceImplTest {
         adItem.photoUrl = url
         whenever(adsRepository.save(any<AdItem>())).thenReturn(adItem)
 
-        val ad = adsService.saveNewAd(adItem)
+        val ad = adsService.save(adItem)
 
         assertThat(ad.deviceId).isEqualTo(newItem.deviceId)
         assertThat(ad.name).isEqualTo(newItem.name)
@@ -134,7 +138,7 @@ class AdsServiceImplTest {
         val adItem = newItem.toAdItem()
         whenever(adsRepository.save(any<AdItem>())).thenReturn(adItem)
 
-        val ad = adsService.saveNewAd(adItem)
+        val ad = adsService.save(adItem)
         assertThat(ad.photoUrl).isEmpty()
     }
 }

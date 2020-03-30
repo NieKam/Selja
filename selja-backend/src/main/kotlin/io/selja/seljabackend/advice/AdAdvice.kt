@@ -1,8 +1,8 @@
 package io.selja.seljabackend.advice
 
-import io.selja.seljabackend.exception.AdNotFoundException
-import io.selja.seljabackend.exception.BadLocationException
-import io.selja.seljabackend.model.ErrorResponse
+import io.selja.seljabackend.web.rest.errors.AdNotFoundException
+import io.selja.seljabackend.web.rest.errors.BadLocationException
+import io.selja.seljabackend.domain.ErrorResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

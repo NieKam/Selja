@@ -1,8 +1,8 @@
-package io.selja.seljabackend.model
+package io.selja.seljabackend.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonView
-import io.selja.seljabackend.views.Views
+import io.selja.seljabackend.domain.views.Views
 import javax.persistence.*
 
 @Entity

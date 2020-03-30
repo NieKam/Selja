@@ -1,4 +1,4 @@
-package io.selja.seljabackend.exception
+package io.selja.seljabackend.web.rest.errors
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus

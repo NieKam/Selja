@@ -1,11 +1,11 @@
-package io.selja.seljabackend.controller
+package io.selja.seljabackend.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
-import io.selja.seljabackend.model.AdItem
-import io.selja.seljabackend.model.NewAdItem
-import io.selja.seljabackend.model.toAdItem
+import io.selja.seljabackend.domain.AdItem
+import io.selja.seljabackend.domain.NewAdItem
+import io.selja.seljabackend.domain.toAdItem
 import io.selja.seljabackend.service.AdsService
 import io.selja.seljabackend.service.StorageService
 import org.hamcrest.Matchers
@@ -43,7 +43,7 @@ class AdItemsControllerTest() {
         val desc = "Description"
         val ad1 = AdItem(id = 1, name = name, description = desc)
         val ad2 = AdItem(id = 2, name = name, description = desc)
-        whenever(adsService.getAll(null)).thenReturn(listOf(ad1, ad2))
+        whenever(adsService.findAll(null)).thenReturn(listOf(ad1, ad2))
 
         mockMvc.perform(MockMvcRequestBuilders.get("/items")
                 .accept(MediaType.APPLICATION_JSON))
@@ -60,7 +60,7 @@ class AdItemsControllerTest() {
         val name = "Test"
         val desc = "Description"
         val ad = AdItem(id = 1, name = name, description = desc)
-        whenever(adsService.getOne(1, null)).thenReturn(ad)
+        whenever(adsService.findOne(1, null)).thenReturn(ad)
 
         mockMvc.perform(MockMvcRequestBuilders.get("/items/{id}", 1)
                 .accept(MediaType.APPLICATION_JSON))
@@ -81,7 +81,7 @@ class AdItemsControllerTest() {
         val mockJson = MockMultipartFile("ad", "", "application/json", mapper.writeValueAsString(newItem).toByteArray())
 
 
-        whenever(adsService.saveNewAd(any())).thenReturn(adItem)
+        whenever(adsService.save(any())).thenReturn(adItem)
         whenever(storageService.store(any())).thenReturn(imageUrl)
         mockMvc.perform(MockMvcRequestBuilders.multipart("/items")
                 .file(mockImage)
@@ -101,7 +101,7 @@ class AdItemsControllerTest() {
         val newItem = NewAdItem(deviceId = "dev-Id", name = "name", description = "desc", phone = "12345", price = 10.0, duration = 60_000, lat = 50.0, long = 10.0)
         val adItem = newItem.toAdItem()
         val mockJson = MockMultipartFile("ad", "", "application/json", mapper.writeValueAsString(newItem).toByteArray())
-        whenever(adsService.saveNewAd(any())).thenReturn(adItem)
+        whenever(adsService.save(any())).thenReturn(adItem)
 
         mockMvc.perform(MockMvcRequestBuilders.multipart("/items")
                 .file(mockJson))

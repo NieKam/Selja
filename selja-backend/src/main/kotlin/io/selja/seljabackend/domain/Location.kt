@@ -1,6 +1,6 @@
-package io.selja.seljabackend.model
+package io.selja.seljabackend.domain
 
-import io.selja.seljabackend.exception.BadLocationException
+import io.selja.seljabackend.web.rest.errors.BadLocationException
 import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.persistence.*

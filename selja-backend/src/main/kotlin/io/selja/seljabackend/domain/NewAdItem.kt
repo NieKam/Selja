@@ -1,6 +1,6 @@
-package io.selja.seljabackend.model
+package io.selja.seljabackend.domain
 
-import io.selja.seljabackend.controller.CURRENCY
+import io.selja.seljabackend.configuration.CURRENCY
 import java.text.NumberFormat
 import javax.validation.constraints.*
 

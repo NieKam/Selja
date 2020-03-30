@@ -1,6 +1,6 @@
 package io.selja.seljabackend.repository
 
-import io.selja.seljabackend.model.AdItem
+import io.selja.seljabackend.domain.AdItem
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
@@ -17,6 +17,8 @@ interface AdsRepository : JpaRepository<AdItem, Long> {
             "FROM AdItem a WHERE " +
             "ACOS( SIN( RADIANS( a.location.lat ) ) * SIN( RADIANS( :lat ) ) + COS( RADIANS( a.location.lat ) ) * " +
             "COS( RADIANS( :lat )) * COS( RADIANS( a.location.long ) - RADIANS( :long )) ) * 6380 < :radiusKm " +
+            "AND " +
+            "a.validUntilMs > :timestamp " +
             "ORDER BY distance")
-    fun findAllInArea(lat: Double, long: Double, radiusKm: Double): List<AdItem>
+    fun findAllInArea(lat: Double, long: Double, radiusKm: Double, timestamp: Long): List<AdItem>
 }

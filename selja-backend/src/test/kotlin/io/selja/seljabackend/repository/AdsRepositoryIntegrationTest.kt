@@ -1,7 +1,7 @@
 package io.selja.seljabackend.repository
 
-import io.selja.seljabackend.model.AdItem
-import io.selja.seljabackend.model.Location
+import io.selja.seljabackend.domain.AdItem
+import io.selja.seljabackend.domain.Location
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -76,7 +76,7 @@ class AdsRepositoryIntegrationTest {
         entityManager.flush()
 
         // when
-        val found = adsRepository.findAllInArea(lat = 50.0, long = 10.0, radiusKm = 10.0)
+        val found = adsRepository.findAllInArea(lat = 50.0, long = 10.0, radiusKm = 10.0, timestamp = System.currentTimeMillis())
 
         // then
         assertThat(found.size).isEqualTo(2)

@@ -1,13 +1,13 @@
 package io.selja.seljabackend.service
 
-import io.selja.seljabackend.model.AdItem
-import io.selja.seljabackend.model.Location
+import io.selja.seljabackend.domain.AdItem
+import io.selja.seljabackend.domain.Location
 
 interface AdsService {
 
-    fun getAll(location: Location?): List<AdItem>
+    fun findAll(location: Location?): List<AdItem>
 
-    fun getOne(id: Long, location: Location?): AdItem
+    fun findOne(id: Long, location: Location?): AdItem
 
-    fun saveNewAd(adItem: AdItem): AdItem
+    fun save(adItem: AdItem): AdItem
 }
